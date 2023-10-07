@@ -16,8 +16,8 @@ import onnxruntime
 import facefusion.globals
 from facefusion import wording
 
-#TEMP_DIRECTORY_PATH = os.path.join(tempfile.gettempdir(), 'facefusion')
-TEMP_DIRECTORY_PATH = os.path.join('content/drive/MyDrive/Facefusion/temp', 'facefusion')
+TEMP_DIRECTORY_PATH = os.path.join(tempfile.gettempdir(), 'facefusion')
+#TEMP_DIRECTORY_PATH = os.path.join('content/drive/MyDrive/Facefusion/temp', 'facefusion')
 TEMP_OUTPUT_NAME = 'temp.mp4'
 
 # monkey patch ssl
@@ -92,7 +92,7 @@ def merge_video(target_path : str, fps : float) -> bool:
 		output_video_compression = round(51 - (facefusion.globals.output_video_quality * 0.5))
 		commands.extend([ '-cq', str(output_video_compression) ])
 	commands.extend([ '-pix_fmt', 'yuv420p', '-vf', 'colorspace=bt709:iall=bt601-6-625', '-y', temp_output_path ])
-	# return run_ffmpeg(commands)
+	return run_ffmpeg(commands)
 
 
 def restore_audio(target_path : str, output_path : str) -> bool:
@@ -114,7 +114,7 @@ def restore_audio(target_path : str, output_path : str) -> bool:
 			commands.extend([ '-to', str(end_time) ])
 		commands.extend([ '-c:a', 'aac' ])
 	commands.extend([ '-map', '0:v:0', '-map', '1:a:0', '-y', output_path ])
-	# return run_ffmpeg(commands)
+	return run_ffmpeg(commands)
 
 
 def get_temp_frame_paths(target_path : str) -> List[str]:
